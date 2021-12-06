@@ -1,8 +1,22 @@
-body {
-  display: flex;
-  justify-content: center;
-  padding: 50px;
+:root{
+  --primary-color: #0b0e14;
+  --secondary-color: #8a9199;
+  --accent-color: #f29718;
 }
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--primary-color);
+  color:var(--secondary-color);
+}
+
 .frame {
   border: solid;
   display: flex;
@@ -10,17 +24,37 @@ body {
   height: 500px;
   width: 350px;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 10px; 
 }
 
 .input-field {
-  border: 2px solid gray;
-  height: 60px;
+  border: 2px solid var(--accent-color);
+  height: 142px;
   margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 40px;
 }
 
 .numpad {
-  border: 2px solid cadetblue;
-  flex: auto;
-  display: flex;
+ /* border: 2px solid cadetblue; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+button {
+  color: var(--primary-color);
+  font-size: 30px;
+  font-family: hack;
+  height: 80px;  
+  transition-duration: 0.3s;
+  box-shadow: none;
+  margin: 3px;
+  border-radius: 4px;
+  border: none;
+  background: var(--secondary-color);
+}
+
+button:hover {
+
+}
+

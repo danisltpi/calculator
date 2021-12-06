@@ -18,7 +18,15 @@ function operate(operator, x, y) {
   return operator(x, y);
 }
 
-buttonSymbols = [
+function addButtons(symbols, numpad) {
+  symbols.forEach((symbol) => {
+    let btn = document.createElement("button") ;
+    btn.textContent = symbol;
+    numpad.appendChild(btn);
+  })
+}
+
+const buttonSymbols = [
   "7",
   "8",
   "9",
@@ -37,4 +45,6 @@ buttonSymbols = [
   "+",
 ];
 
-buttonSymbols.forEach((i) => console.log(i));
+const numpad = document.querySelector(".numpad");
+
+addButtons(buttonSymbols, numpad);
