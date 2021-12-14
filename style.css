@@ -1,4 +1,4 @@
-:root{
+:root {
   --primary-color: #0b0e14;
   --secondary-color: #8a9199;
   --accent-color: #f29718;
@@ -10,43 +10,55 @@ html {
 
 body {
   height: 100%;
-  display:flex;
+  font-family: hack, monospace;
+  display: flex;
   justify-content: center;
   align-items: center;
   background: var(--primary-color);
-  color:var(--secondary-color);
+  color: var(--secondary-color);
 }
 
 .frame {
   border: solid;
   display: flex;
   flex-direction: column;
-  height: 500px;
-  width: 350px;
-  padding: 12px;
-  border-radius: 10px; 
+  height: 550px;
+  width: 370px;
+  padding: 16px;
+  border-radius: 10px;
 }
 
 .input-field {
   border: 2px solid var(--accent-color);
-  height: 142px;
-  margin-bottom: 10px;
+  height: 100%;
+  margin-bottom: 18px;
   border-radius: 10px;
-  padding: 40px;
+  font-size: 2.5em;
+  padding: 12px;
+  vertical-align: middle;
+  text-align: right;
+}
+
+.input-top {
+  font-size: 0.6em;
+  height: 40%;
+  opacity: 50%;
 }
 
 .numpad {
- /* border: 2px solid cadetblue; */
+  /* border: 2px solid cadetblue; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas: "ac ac c c";
+  grid-gap: 4px;
 }
 
 button {
+  font-family: hack;
   color: var(--primary-color);
   font-size: 30px;
-  font-family: hack;
-  height: 80px;  
-  transition-duration: 0.3s;
+  height: 75px;
+  transition-duration: 0.2s;
   box-shadow: none;
   margin: 3px;
   border-radius: 4px;
@@ -54,7 +66,15 @@ button {
   background: var(--secondary-color);
 }
 
-button:hover {
-
+.ac-btn {
+  grid-area: ac;
+  background-color: var(--accent-color);
 }
 
+.c-btn {
+  grid-area: c;
+}
+
+button:hover {
+  opacity: 0.5;
+}

@@ -26,6 +26,13 @@ function addButtons(symbols, numpad) {
   })
 }
 
+function display(value, previousValue) {
+  let displayField = document.querySelector(".input-bottom");
+  let previousField = document.querySelector(".input-top");
+  displayField.textContent = value;
+  previousField.textContent = previousValue;
+}
+
 const buttonSymbols = [
   "7",
   "8",
@@ -46,5 +53,6 @@ const buttonSymbols = [
 ];
 
 const numpad = document.querySelector(".numpad");
-
 addButtons(buttonSymbols, numpad);
+
+// eventlistener
