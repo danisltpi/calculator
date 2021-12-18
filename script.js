@@ -26,6 +26,59 @@ function addButtons(symbols) {
   });
 }
 
+function calculate() {
+    // parse previous number
+    let x = Number(
+      previousField.textContent.substring(
+        0,
+        previousField.textContent.length - 2
+      )
+    );
+
+    // if there is no value stored don't do anything
+    if (x == "") {
+      return;
+    }
+    let y = Number(displayField.textContent);
+
+    console.log(lastOperator, y);
+
+    // lmao at divide by 0
+    if (lastOperator == "÷" && y == 0) {
+      display("lmao", "10");
+      return;
+    }
+    // remove previous content
+    clear();
+
+    // operators
+    let operator;
+
+    switch (lastOperator) {
+      case "+":
+        operator = add;
+        break;
+      case "-":
+        operator = subtract;
+        break;
+      case "×":
+        operator = multiply;
+        break;
+      case "÷":
+        operator = divide;
+        break;
+      default:
+        return;
+    }
+    let result = operate(operator, x, y);
+    // round result if it is too long
+    if (String(result).length >= 14) {
+      result = Math.round(result * 10e12) / 10e12;
+      result = result.toPrecision(12);
+    }
+    return result;
+}
+
 function pressButton(event) {
   let buttonText = event.currentTarget.textContent;
   if (buttonText == "AC") {
@@ -42,55 +95,48 @@ function pressButton(event) {
 
   // if a operator was pressed, then add to previousField
   else if (["+", "-", "÷", "×"].includes(buttonText)) {
+    // if there is already an operation in the previous field then calculate
+    if (previousField.textContent) {
+      previousField.textContent = calculate() + " " + buttonText;
+      lastOperator = buttonText;
+      return;
+    }
     lastOperator = buttonText;
     display("0", displayField.textContent + " " + buttonText);
     displayField.textContent = "0";
   } else if (buttonText == "=") {
-    // parse previous number
-    let x = Number(
-      previousField.textContent.substring(
-        0,
-        previousField.textContent.length - 2
-      )
-    );
-
-    // if there is no value stored don't do anything
-    if (x == "") {
+    let result = calculate();
+    console.log(Boolean(result));
+    if (result) {
+      display(result);
+    } else {
       return;
     }
-    let y = Number(displayField.textContent);
-
-    // remove previous content
-    clear();
-
-    // operators
-    let operator;
-
-    switch(lastOperator) {
-      case "+": operator = add; break;
-      case "-": operator = subtract; break;
-      case "×": operator = multiply; break;
-      case "÷": operator = divide; break;
-      default: return;
-    }
-
-    display(operate(operator, x, y));
-
-  } else {
+  } else if (buttonText == "." && displayField.textContent.includes(".")) {
     // ensure . can only appear once
-    if (buttonText == "." && displayField.textContent.includes(".")) {
-      return;
-    }
-
+    return;
+  } else if (displayField.textContent.length >= 14) {
+    alert("Too many numbers");
+    return;
+  } else {
     display(buttonText, previousField.textContent);
   }
 }
 
 function display(bottom, top) {
   // remove 0 at the beginning
-  if (displayField.textContent == 0) {
+  if (
+    displayField.textContent == 0 ||
+    displayField.textContent == "Infinity" ||
+    displayField.textContent == "lmao" ||
+    displayField.textContent == "NaN"
+  ) {
     displayField.textContent = bottom;
     return;
+  }
+
+  if (displayField.textContent.length >= 14) {
+    alert("toolong");
   }
 
   // display content
@@ -128,8 +174,10 @@ const previousField = document.querySelector(".input-top");
 addButtons(buttonSymbols);
 const buttons = document.querySelectorAll("button");
 // last operator clicked
-let lastOperator = "";
+let lastOperator;
 
 buttons.forEach((b) => {
   b.addEventListener("click", pressButton);
 });
+
+// add keyboard support
