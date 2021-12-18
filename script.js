@@ -27,60 +27,61 @@ function addButtons(symbols) {
 }
 
 function calculate() {
-    // parse previous number
-    let x = Number(
-      previousField.textContent.substring(
-        0,
-        previousField.textContent.length - 2
-      )
-    );
+  // parse previous number
+  let x = Number(
+    previousField.textContent.substring(0, previousField.textContent.length - 2)
+  );
 
-    // if there is no value stored don't do anything
-    if (x == "") {
+  // if there is no value stored don't do anything
+  if (x == "") {
+    return;
+  }
+  let y = Number(displayField.textContent);
+
+  console.log(lastOperator, y);
+
+  // lmao at divide by 0
+  if (lastOperator == "÷" && y == 0) {
+    display("lmao", "10");
+    return;
+  }
+  // remove previous content
+  clear();
+
+  // operators
+  let operator;
+
+  switch (lastOperator) {
+    case "+":
+      operator = add;
+      break;
+    case "-":
+      operator = subtract;
+      break;
+    case "×":
+      operator = multiply;
+      break;
+    case "÷":
+      operator = divide;
+      break;
+    default:
       return;
-    }
-    let y = Number(displayField.textContent);
-
-    console.log(lastOperator, y);
-
-    // lmao at divide by 0
-    if (lastOperator == "÷" && y == 0) {
-      display("lmao", "10");
-      return;
-    }
-    // remove previous content
-    clear();
-
-    // operators
-    let operator;
-
-    switch (lastOperator) {
-      case "+":
-        operator = add;
-        break;
-      case "-":
-        operator = subtract;
-        break;
-      case "×":
-        operator = multiply;
-        break;
-      case "÷":
-        operator = divide;
-        break;
-      default:
-        return;
-    }
-    let result = operate(operator, x, y);
-    // round result if it is too long
-    if (String(result).length >= 14) {
-      result = Math.round(result * 10e12) / 10e12;
-      result = result.toPrecision(12);
-    }
-    return result;
+  }
+  let result = operate(operator, x, y);
+  // round result if it is too long
+  if (String(result).length >= 14) {
+    result = Math.round(result * 10e12) / 10e12;
+    result = result.toPrecision(12);
+  }
+  return result;
 }
 
 function pressButton(event) {
   let buttonText = event.currentTarget.textContent;
+  doButton(buttonText);
+}
+
+function doButton(buttonText) {
   if (buttonText == "AC") {
     clear();
   }
@@ -134,10 +135,11 @@ function display(bottom, top) {
     displayField.textContent = bottom;
     return;
   }
-
+  /*
   if (displayField.textContent.length >= 14) {
     alert("toolong");
   }
+  */
 
   // display content
   displayField.textContent += bottom;
@@ -147,6 +149,26 @@ function display(bottom, top) {
 function clear() {
   displayField.textContent = "0";
   previousField.textContent = "";
+}
+
+function pressKey(event) {
+  let key = event.key;
+  console.log(key);
+  if (key == "*") {
+    key = "×";
+  }
+  if (key == "/") {
+    key = "÷";
+  }
+  if (key == "Enter") {
+    key = "=";
+  }
+  if (key == "Backspace") {
+    doButton("C");
+  }
+  if (buttonSymbols.includes(key)) {
+    doButton(key);
+  }
 }
 
 const buttonSymbols = [
@@ -181,3 +203,4 @@ buttons.forEach((b) => {
 });
 
 // add keyboard support
+document.addEventListener("keydown", pressKey);
